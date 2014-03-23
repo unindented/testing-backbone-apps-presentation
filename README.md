@@ -1,933 +1,870 @@
-# reveal.js [![Build Status](https://travis-ci.org/hakimel/reveal.js.png?branch=master)](https://travis-ci.org/hakimel/reveal.js)
-
-A framework for easily creating beautiful presentations using HTML. [Check out the live demo](http://lab.hakim.se/reveal-js/).
-
-reveal.js comes with a broad range of features including [nested slides](https://github.com/hakimel/reveal.js#markup), [markdown contents](https://github.com/hakimel/reveal.js#markdown), [PDF export](https://github.com/hakimel/reveal.js#pdf-export), [speaker notes](https://github.com/hakimel/reveal.js#speaker-notes) and a [JavaScript API](https://github.com/hakimel/reveal.js#api). It's best viewed in a browser with support for CSS 3D transforms but [fallbacks](https://github.com/hakimel/reveal.js/wiki/Browser-Support) are available to make sure your presentation can still be viewed elsewhere.
+# Testing Backbone Apps
 
 
-#### More reading:
-- [Installation](#installation): Step-by-step instructions for getting reveal.js running on your computer.
-- [Changelog](https://github.com/hakimel/reveal.js/releases): Up-to-date version history.
-- [Examples](https://github.com/hakimel/reveal.js/wiki/Example-Presentations): Presentations created with reveal.js, add your own!
-- [Browser Support](https://github.com/hakimel/reveal.js/wiki/Browser-Support): Explanation of browser support and fallbacks.
 
-## Online Editor
+## Who am I
 
-Presentations are written using HTML or markdown but there's also an online editor for those of you who prefer a graphical interface. Give it a try at [http://slid.es](http://slid.es).
+Daniel ([@unindented](https://twitter.com/unindented))
+
+Front-end developer at Yammer
 
 
-## Instructions
 
-### Markup
+## Testing at Yammer
 
-Markup hierarchy needs to be ``<div class="reveal"> <div class="slides"> <section>`` where the ``<section>`` represents one slide and can be repeated indefinitely. If you place multiple ``<section>``'s inside of another ``<section>`` they will be shown as vertical slides. The first of the vertical slides is the "root" of the others (at the top), and it will be included in the horizontal sequence. For example:
 
-```html
-<div class="reveal">
-	<div class="slides">
-		<section>Single Horizontal Slide</section>
-		<section>
-			<section>Vertical Slide 1</section>
-			<section>Vertical Slide 2</section>
-		</section>
-	</div>
-</div>
+### July 2012
+
+```bash
+git co `git rev-list -n 1 --before="2012-07-02" master`
 ```
 
-### Markdown
+- Lines of code: ~67600 <!-- .element: class="fragment" -->
+- Tests: 673 (10 errors and 44 pending) <!-- .element: class="fragment" -->
+- Time: 27 seconds <!-- .element: class="fragment" -->
+- Coverage: ? <!-- .element: class="fragment" -->
 
-It's possible to write your slides using Markdown. To enable Markdown, add the ```data-markdown``` attribute to your ```<section>``` elements and wrap the contents in a ```<script type="text/template">``` like the example below.
+Note:
 
-This is based on [data-markdown](https://gist.github.com/1343518) from [Paul Irish](https://github.com/paulirish) modified to use [marked](https://github.com/chjj/marked) to support [Github Flavoured Markdown](https://help.github.com/articles/github-flavored-markdown). Sensitive to indentation (avoid mixing tabs and spaces) and line breaks (avoid consecutive breaks).
+We were really bad at this. We didn't have a culture of testing in the front-end team. We had very few tests, and they where slow.
 
-```html
-<section data-markdown>
-	<script type="text/template">
-		## Page title
 
-		A paragraph with some text and a [link](http://hakim.se).
-	</script>
-</section>
+### March 2014
+
+```bash
+git co master
 ```
 
-#### External Markdown
+- Lines of code: ~72700 <!-- .element: class="fragment" -->
+- Tests: 5359 <!-- .element: class="fragment" -->
+- Time: 31 seconds <!-- .element: class="fragment" -->
+- Coverage: ~70% <!-- .element: class="fragment" -->
 
-You can write your content as a separate file and have reveal.js load it at runtime. Note the separator arguments which determine how slides are delimited in the external file. The ```data-charset``` attribute is optional and specifies which charset to use when loading the external file.
+Note:
 
-When used locally, this feature requires that reveal.js [runs from a local web server](#full-setup).
+We are getting better, but we still have a lot to improve.
 
-```html
-<section data-markdown="example.md"  
-         data-separator="^\n\n\n"  
-         data-vertical="^\n\n"  
-         data-notes="^Note:"  
-         data-charset="iso-8859-15">
-</section>
-```
-
-#### Element Attributes
-
-Special syntax (in html comment) is available for adding attributes to Markdown elements. This is useful for fragments, amongst other things.
-
-```html
-<section data-markdown>
-	<script type="text/template">
-		- Item 1 <!-- .element: class="fragment" data-fragment-index="2" -->
-		- Item 2 <!-- .element: class="fragment" data-fragment-index="1" -->
-	</script>
-</section>
-```
-
-#### Slide Attributes
-
-Special syntax (in html comment) is available for adding attributes to the slide `<section>` elements generated by your Markdown.
-
-```html
-<section data-markdown>
-	<script type="text/template">
-	<!-- .slide: data-background="#ff0000" -->
-		Mardown content
-	</script>
-</section>
-```
+The message here is that, even if your project is in a bad situation right now, you can get out of that hole. Don't give up, because testing has too many benefits to pass.
 
 
-### Configuration
 
-At the end of your page you need to initialize reveal by running the following code. Note that all config values are optional and will default as specified below.
+## Why test?
+
+> Tests are like vegetables. They're really good for other people. <!-- .element: class="fragment" -->
+
+
+### Certainty
+
+Note:
+
+Passing tests give you some level of certainty that the changes you made didn't break anything.
+
+That level of certainty is determined by the quality of your test suite.
+
+
+### Courage
+
+Note:
+
+First reaction upon seeing messy code: "This is a mess that needs to be cleaned"
+
+Second reaction: "I'm not touching it!"
+
+Why? Because you know that if you touch it you risk breaking it; and if you break it, it becomes yours.
+
+Tests help you make sure that your cleaning doesn't break anything. When you have a test suite you can trust, you lose fear of making changes. The code base steadily improves instead of rotting.
+
+
+### Design
+
+Note:
+
+To test a piece of code, you first have to isolate it. It is difficult to test an entity if it is tightly coupled to others.
+
+Tests force you to think about good, decoupled designs (especially if you do TDD).
+
+
+### Documentation
+
+Note:
+
+A test is an example written in code, describing how the system should be used.
+
+Unit tests are documents. They are unambiguous, accurate, written in a familiar language, and can be executed. They are the best kind of low-level documentation.
+
+
+### Defect rate
+
+[Microsoft Research: Realizing quality improvement through test driven development](http://research.microsoft.com/en-us/groups/ese/nagappan_tdd.pdf) <!-- .element: class="fragment" -->
+
+Note:
+
+"Defect density [...] decreased between 40% and 90% relative to similar projects that did not use the TDD practice."
+
+
+
+## General advice
+
+
+
+## Keep tests **isolated**
+
+
+### Avoid global state
+
+Note:
+
+Global state is bad from theoretical, maintainability, and understandability point of view, but is tolerable at run-time as long as you have one instance of your application.
+
+However, each test is a small instantiation of your application in contrast to one instance of application in production. Global state persists from one test to the next and creates mass confusion (e.g. tests fail together but problems can not be reproduced in isolation, order of the tests matters, etc.).
+
+
+### Avoid singletons
+
+Note:
+
+All of the internal objects of the singleton are global as well (and the internals of those objects, and...). Singletons are just another flavor of global state.
+
+Of course you can have objects that are instantiated only once in your application, but don't make them singletons by definition. In tests they should be instantiated as any other object.
+
 
 ```javascript
-Reveal.initialize({
+var MySingletonClass = function () {
 
-	// Display controls in the bottom right corner
-	controls: true,
+  if (MySingletonClass.prototype._instance) {
+    return MySingletonClass.prototype._instance;
+  }
+  MySingletonClass.prototype._instance = this;
 
-	// Display a presentation progress bar
-	progress: true,
+};
+```
 
-	// Display the page number of the current slide
-	slideNumber: false,
+Note:
 
-	// Push each slide change to the browser history
-	history: false,
-
-	// Enable keyboard shortcuts for navigation
-	keyboard: true,
-
-	// Enable the slide overview mode
-	overview: true,
-
-	// Vertical centering of slides
-	center: true,
-
-	// Enables touch navigation on devices with touch input
-	touch: true,
-
-	// Loop the presentation
-	loop: false,
-
-	// Change the presentation direction to be RTL
-	rtl: false,
-
-	// Turns fragments on and off globally
-	fragments: true,
-
-	// Flags if the presentation is running in an embedded mode,
-	// i.e. contained within a limited portion of the screen
-	embedded: false,
-
-	// Number of milliseconds between automatically proceeding to the
-	// next slide, disabled when set to 0, this value can be overwritten
-	// by using a data-autoslide attribute on your slides
-	autoSlide: 0,
-
-	// Stop auto-sliding after user input
-	autoSlideStoppable: true,
-
-	// Enable slide navigation via mouse wheel
-	mouseWheel: false,
-
-	// Hides the address bar on mobile devices
-	hideAddressBar: true,
-
-	// Opens links in an iframe preview overlay
-	previewLinks: false,
-
-	// Transition style
-	transition: 'default', // default/cube/page/concave/zoom/linear/fade/none
-
-	// Transition speed
-	transitionSpeed: 'default', // default/fast/slow
-
-	// Transition style for full page slide backgrounds
-	backgroundTransition: 'default', // default/none/slide/concave/convex/zoom
-
-	// Number of slides away from the current that are visible
-	viewDistance: 3,
-
-	// Parallax background image
-	parallaxBackgroundImage: '', // e.g. "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'"
-
-	// Parallax background size
-	parallaxBackgroundSize: '' // CSS syntax, e.g. "2100px 900px"
+Don't ever do shit like this, please.
 
 
+### Clean up after yourself
+
+Note:
+
+Failing to do so could result in changes to the conditions of other tests.
+
+Also, browsers could fail to garbage-collect your stuff, and memory usage could grow substantially.
+
+We reached a point where our tests would crash IE8 in SauceLabs because of the amount of memory they required.
+
+
+
+## Keep tests **simple**
+
+
+### Don't mix concerns
+
+Note:
+
+Complex classes are hard to test, since there is so much functionality you need to cover:
+
+  - Describe what the class does in one sentence, without using conjunctions.
+  - Its code should be easy for other team members to read and quickly understand.
+
+
+### Separate models from service objects
+
+Note:
+
+We all know we should be separating models and views. That's why we are using Backbone, right? But even then, we sometimes feel tempted to create fat models that have lots of functionality.
+
+My advice is to separate models from service objects:
+
+  - Models: These just have a bunch of getters and setters, and are very easy to construct. They are never mocked, and probably don't need an interface. Examples: `User`, `Message`, etc.
+  - Service objects: These do the interesting work. Their constructors ask for lots of other objects for colaboration, are good candidates for mocking, tend to have an interface, and can even have multiple implementations. Example: `UserAuthenticator`, `LinkHydrator`, etc.
+
+Models can be tested easily, as we can create them on the fly and assert on their state.
+
+Service objects are harder to test since their state is not clear, and they are all about collaboration. As a result we are forced to use mocking, something which we want to minimize.
+
+Mixing the two creates a hybrid which has none of the advantages of models, and all the disadvantages of service objects.
+
+
+### Favor composition over inheritance
+
+Note:
+
+Two key ideas in the first chapter of Design Patterns:
+
+  - Program to an interface, not an implementation.
+  - Favor object composition over class inheritance.
+
+You may think that these are things that only apply to languages like Java, but they are as important in JavaScript.
+
+I'll flat out say that using inheritance for code reuse is wrong.
+
+The base class is exposing its implementation details to all its subclasses. You have to actually know the internal implementation of the base class in order to correctly write the derived class. Any changes to the internal implementation of the base class could break the derived class in ways difficult to predict.
+
+I put mixins in the same bucket as inheritance.
+
+
+### Favor polymorphism over conditionals
+
+Note:
+
+If you see a `switch` statement you should think polymorphism.
+
+If you see the same `if` condition repeated in many places in your class you should again think polymorphism.
+
+Polymorphism will break your complex class into several simpler classes which clearly define which pieces of the code are related and execute together.
+
+
+
+## Keep tests **fast**
+
+
+### Don't do too much work in constructors
+
+Note:
+
+Almost every test in your suite instantiates an object. It is by far the most common operation you will do in tests, so make it easy on yourself and make the constructors do no work.
+
+Any work you do in a constructor, you will have to successfully navigate through on every test.
+
+
+### Don't attach to the document unless necessary
+
+Note:
+
+Attaching to the document means additional work for the browser engine, which translates into slower tests. Most of the stuff you want to test doesn't need to live inside the document.
+
+
+### Fake anything that's unreliable or slow
+
+Note:
+
+Timers, animations, objects that do heavy DOM manipulation, anything external to your system...
+
+Fake it all, but clean up after you.
+
+
+
+## Know the tools
+
+
+### Testing frameworks
+
+- [Jasmine](http://jasmine.github.io/)
+- [Mocha](http://visionmedia.github.io/mocha/) + [Chai](http://chaijs.com/) + [SinonJS](http://sinonjs.org/)
+
+Note:
+
+Jasmine was probably the first popular testing framework in JavaScript. It's an all-in-one package, but has some limitations, and is not that easy to extend.
+
+Mocha has a more do-it-yourself approach. Minimal (doesn't come with assertion or spy frameworks!) but really flexible. Usually combined with Chai for assertions, and SinonJS for spies.
+
+SinonJS provides test spies, stubs and mocks, and works with any unit testing framework.
+
+
+### Code coverage libraries
+
+- [Istanbul](https://github.com/gotwarlost/istanbul)
+- [Blanket](http://blanketjs.org/)
+
+Note:
+
+These tools instrument your code before running your test suite, so they know which parts of the code have been exercised.
+
+
+### Headless browsers
+
+- [PhantomJS](http://phantomjs.org/)
+- [SlimerJS](http://slimerjs.org/)
+- [trifleJS](http://triflejs.org/)
+
+Note:
+
+A headless browser is just a browser without a GUI. You control it through code.
+
+
+### Test runners
+
+- [Testem](https://github.com/airportyh/testem)
+- [Karma](http://karma-runner.github.io/)
+
+Note:
+
+Tools focused on getting instant feedback from tests.
+
+
+### Cloud testing platforms
+
+- [SauceLabs](https://saucelabs.com/)
+- [BrowserStack](http://www.browserstack.com/)
+
+Note:
+
+Run your tests in multiple browsers, but without having to maintain the VMs yourself.
+
+
+### Continuous integration platforms
+
+- [TravisCI](https://travis-ci.org/)
+- [CircleCI](https://circleci.com/)
+- [Jenkins](http://jenkins-ci.org/)
+- [TeamCity](http://www.jetbrains.com/teamcity/)
+
+Note:
+
+Have a single source of truth.
+
+Run your tests periodically, or after every push, to ensure that master is green.
+
+
+
+## Structure of a test
+
+1. Instantiate object graph <!-- .element: class="fragment" -->
+2. Apply stimulus <!-- .element: class="fragment" -->
+3. Assert a response <!-- .element: class="fragment" -->
+
+
+
+## Testing **models**
+
+
+### Testing validation
+
+```javascript
+describe('Message', function () {
+  var message;
+
+  describe('#isValid', function () {
+    // ...
+  });
 });
 ```
 
-Note that the new default vertical centering option will break compatibility with slides that were using transitions with backgrounds (`cube` and `page`). To restore the previous behavior, set `center` to `false`.
+Note:
 
+Maybe validation is one of the most common things to test in a Backbone model.
 
-The configuration can be updated after initialization using the ```configure``` method:
+There shouldn't be that much more to test for models, like we discussed before. All complex behavior should go into service objects.
+
+I usually organize my test like this:
+
+  - Root `describe` block with the name of the class under test.
+  - Child `describe` blocks, one per public method. I follow the RSpec convention of starting with `#` for instance methods, and `.` for class methods.
+
+Do whatever works for your project, but keep in mind that following the same conventions across the test suite helps people understand what's going on.
+
 
 ```javascript
-// Turn autoSlide off
-Reveal.configure({ autoSlide: 0 });
+describe('when it does not have body', function () {
+  beforeEach(function () {
+    message = new Message();
+  });
 
-// Start auto-sliding every 5s
-Reveal.configure({ autoSlide: 5000 });
-```
-
-
-### Dependencies
-
-Reveal.js doesn't _rely_ on any third party scripts to work but a few optional libraries are included by default. These libraries are loaded as dependencies in the order they appear, for example:
-
-```javascript
-Reveal.initialize({
-	dependencies: [
-		// Cross-browser shim that fully implements classList - https://github.com/eligrey/classList.js/
-		{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
-
-		// Interpret Markdown in <section> elements
-		{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-		{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-
-		// Syntax highlight for <code> elements
-		{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
-
-		// Zoom in and out with Alt+click
-		{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
-
-		// Speaker notes
-		{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
-
-		// Remote control your reveal.js presentation using a touch device
-		{ src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } },
-
-		// MathJax
-		{ src: 'plugin/math/math.js', async: true }
-	]
+  it('returns `false`', function () {
+    expect(message.isValid()).toBe(false);
+  });
 });
 ```
 
-You can add your own extensions using the same syntax. The following properties are available for each dependency object:
-- **src**: Path to the script to load
-- **async**: [optional] Flags if the script should load after reveal.js has started, defaults to false
-- **callback**: [optional] Function to execute when the script has loaded
-- **condition**: [optional] Function which must return true for the script to be loaded
+Message #isValid when it does not have body returns false <!-- .element: class="fragment" -->
 
+Note:
 
-### Presentation Size
+Most test runners I know concatenate the strings for each block when printing out the report.
 
-All presentations have a normal size, that is the resolution at which they are authored. The framework will automatically scale presentations uniformly based on this size to ensure that everything fits on any given display or viewport.
-
-See below for a list of configuration options related to sizing, including default values:
 
 ```javascript
-Reveal.initialize({
+describe('when it has body', function () {
+  beforeEach(function () {
+    message = new Message({ body: 'Foo' });
+  });
 
-	...
+  it('returns `true`', function () {
+    expect(message.isValid()).toBe(true);
+  });
+});
+```
 
-	// The "normal" size of the presentation, aspect ratio will be preserved
-	// when the presentation is scaled to fit different resolutions. Can be
-	// specified using percentage units.
-	width: 960,
-	height: 700,
+Message #isValid when it has body returns true <!-- .element: class="fragment" -->
 
-	// Factor of the display size that should remain empty around the content
-	margin: 0.1,
+Note:
 
-	// Bounds for smallest/largest possible scale to apply to content
-	minScale: 0.2,
-	maxScale: 1.0
+So if you name things right, they read like sentences, and should describe the behavior of your system in plain English.
 
+
+### Testing events
+
+```javascript
+initialize: function () {
+  var recipients = this.get('recipients');
+
+  recipients.on('add remove reset', function () {
+    this.trigger('change:recipients');
+  }, this);
+}
+```
+
+Note:
+
+You may also want to test custom events in your model. If you have a collection as a property of one of your models, maybe adding or removing from it should cause the parent model to trigger an event.
+
+
+```javascript
+describe('adding a recipient', function () {
+  it('triggers a `change:recipients` event', function () {
+    var spy = jasmine.createSpy();
+    message.on('change:recipients', spy);
+
+    message.get('recipients').add({ name: 'John' });
+    expect(spy).toHaveBeenCalled();
+  });
+});
+```
+
+Message adding a recipient triggers a change:recipients event <!-- .element: class="fragment" -->
+
+Note:
+
+Events are usually pretty straightforward to test. I like them.
+
+
+### Testing URLs
+
+```javascript
+describe('without ID', function() {
+  it('returns the collection URL', function() {
+    expect(message.url()).toEqual('/messages');
+  });
+});
+
+describe('with ID', function() {
+  it('returns the model URL', function() {
+    message.id = 1;
+    expect(message.url()).toEqual('/messages/1');
+  });
 });
 ```
 
 
-### Auto-sliding
 
-Presentations can be configure to progress through slides automatically, without any user input. To enable this you will need to tell the framework how many milliseconds it should wait between slides:
+## Testing **collections**
+
+
+### Testing comparison
 
 ```javascript
-// Slide every five seconds
-Reveal.configure({
-  autoSlide: 5000
+describe('Recipients', function () {
+  var recipients;
+
+  describe('#comparator', function () {
+    // ...
+  });
 });
 ```
 
-When this is turned on a control element will appear that enables users to pause and resume auto-sliding. Sliding is also paused automatically as soon as the user starts navigating. You can disable these controls by specifying ```autoSlideStoppable: false``` in your reveal.js config.
-
-You can also override the slide duration for individual slides by using the ```data-autoslide``` attribute on individual sections:
-
-```html
-<section data-autoslide="10000">This will remain on screen for 10 seconds</section>
-```
-
-
-### Keyboard Bindings
-
-If you're unhappy with any of the default keyboard bindings you can override them using the ```keyboard``` config option:
 
 ```javascript
-Reveal.configure({
-  keyboard: {
-    13: 'next', // go to the next slide when the ENTER key is pressed
-    27: function() {}, // do something custom when ESC is pressed
-    32: null // don't do anything when SPACE is pressed (i.e. disable a reveal.js default binding)
+describe('with two recipients', function () {
+  beforeEach(function () {
+    recipients = new Recipients([
+      { name: 'Bob' },
+      { name: 'Alice' }
+    ]);
+  });
+
+  it('sorts based on `name`', function () {
+    expect(recipients.first().get('name')).toBe('Alice');
+  });
+});
+```
+
+Recipients #comparator sorts based on name <!-- .element: class="fragment" -->
+
+
+### Testing syncing
+
+```javascript
+describe('#fetch', function() {
+  it('hits the right URL', function() {
+    messages.fetch();
+
+    request = mostRecentAjaxRequest();
+    expect(request.url).toBe('/messages');
+  });
+});
+```
+
+Note:
+
+Mock ajax requests. You don't want to hit the real thing.
+
+
+```javascript
+describe('on success', function() {
+  it('populates the collection', function() {
+    messages.fetch();
+
+    mostRecentAjaxRequest().response(successFixture);
+    expect(messages.length)
+      .toBe(successFixture.response.messages.length);
+  });
+});
+```
+
+Note:
+
+Fixtures can help you simplify your tests.
+
+
+
+## Testing **views**
+
+
+### Setup and teardown
+
+```javascript
+describe('MessageView', function () {
+  var view;
+
+  afterEach(function () {
+    view.remove();
+  });
+});
+```
+
+Note:
+
+Be sure to clean up after creating your views. They are by far the most common source of leaks.
+
+
+### Rendering tests
+
+```javascript
+describe('#render', function () {
+  beforeEach(function () {
+    view = new MessageView({ model: new Message() });
+    view.render();
+  });
+
+  it('renders with class name `message`', function () {
+    //expect(view.$el.hasClass('message')).toBe(true);
+    expect(view.$el).toHaveClassName('message');
+  });
+});
+```
+
+Note:
+
+Remember to use custom matchers, so that your error messages are descriptive. When you break the build, you want as much information as you can get.
+
+
+```javascript
+describe('#render', function () {
+  describe('when the message is valid', function () {
+    beforeEach(function () {
+      model = new Message({ body: 'Foo' });
+      view = new MessageView({ model: model });
+      view.render();
+    });
+
+    // ...
+  });
+});
+```
+
+Note:
+
+I usually define nested `describe` blocks to set up the conditions of the model or collection that the view will receive. It helps keep things structured.
+
+Don't go too deep though, or it will be difficult to tell which block is nested where. I try to stop at this level.
+
+
+### Visibility tests
+
+```javascript
+describe('#expand', function () {
+  it('shows the dropdown', function () {
+    view.expand();
+    expect(view.$el).toHaveSelectorVisible('.dropdown');
+  });
+});
+```
+
+Note:
+
+Checking for the visibility of elements requires you to attach the view to the document.
+
+I usually avoid testing visibility through `is(':visible')`.
+
+
+```javascript
+Backbone.View.extend({
+  show: function () {
+    this.$el.show();
+    this.trigger('show');
+    return this;
+  },
+
+  hide: function () {
+    this.$el.hide();
+    this.trigger('hide');
+    return this;
   }
 });
 ```
 
+Note:
 
-### API
+If your base `View` class has something like this, you can test visibility by spying on these methods, or by listening to events. You no longer need to attach the view to the document, and your tests probably end up being more reliable.
 
-The ``Reveal`` class provides a JavaScript API for controlling navigation and reading state:
 
-```javascript
-// Navigation
-Reveal.slide( indexh, indexv, indexf );
-Reveal.left();
-Reveal.right();
-Reveal.up();
-Reveal.down();
-Reveal.prev();
-Reveal.next();
-Reveal.prevFragment();
-Reveal.nextFragment();
-Reveal.toggleOverview();
-Reveal.togglePause();
-
-// Retrieves the previous and current slide elements
-Reveal.getPreviousSlide();
-Reveal.getCurrentSlide();
-
-Reveal.getIndices(); // { h: 0, v: 0 } }
-
-// State checks
-Reveal.isFirstSlide();
-Reveal.isLastSlide();
-Reveal.isOverview();
-Reveal.isPaused();
-```
-
-### Ready Event
-
-The 'ready' event is fired when reveal.js has loaded all (synchronous) dependencies and is ready to start navigating.
+### Interaction tests
 
 ```javascript
-Reveal.addEventListener( 'ready', function( event ) {
-	// event.currentSlide, event.indexh, event.indexv
-} );
-```
-
-### Slide Changed Event
-
-An 'slidechanged' event is fired each time the slide is changed (regardless of state). The event object holds the index values of the current slide as well as a reference to the previous and current slide HTML nodes.
-
-Some libraries, like MathJax (see [#226](https://github.com/hakimel/reveal.js/issues/226#issuecomment-10261609)), get confused by the transforms and display states of slides. Often times, this can be fixed by calling their update or render function from this callback.
-
-```javascript
-Reveal.addEventListener( 'slidechanged', function( event ) {
-	// event.previousSlide, event.currentSlide, event.indexh, event.indexv
-} );
-```
-
-
-### States
-
-If you set ``data-state="somestate"`` on a slide ``<section>``, "somestate" will be applied as a class on the document element when that slide is opened. This allows you to apply broad style changes to the page based on the active slide.
-
-Furthermore you can also listen to these changes in state via JavaScript:
-
-```javascript
-Reveal.addEventListener( 'somestate', function() {
-	// TODO: Sprinkle magic
-}, false );
-```
-
-### Slide Backgrounds
-
-Slides are contained within a limited portion of the screen by default to allow them to fit any display and scale uniformly. You can apply full page background colors or images by applying a ```data-background``` attribute to your ```<section>``` elements. Below are a few examples.
-
-```html
-<section data-background="#ff0000">
-	<h2>All CSS color formats are supported, like rgba() or hsl().</h2>
-</section>
-<section data-background="http://example.com/image.png">
-	<h2>This slide will have a full-size background image.</h2>
-</section>
-<section data-background="http://example.com/image.png" data-background-size="100px" data-background-repeat="repeat">
-	<h2>This background image will be sized to 100px and repeated.</h2>
-</section>
-```
-
-Backgrounds transition using a fade animation by default. This can be changed to a linear sliding transition by passing ```backgroundTransition: 'slide'``` to the ```Reveal.initialize()``` call. Alternatively you can set ```data-background-transition``` on any section with a background to override that specific transition.
-
-
-### Parallax Background
-
-If you want to use a parallax scrolling background, set the two following config properties when initializing reveal.js (the third one is optional).
-
-```javascript
-Reveal.initialize({
-
-	// Parallax background image
-	parallaxBackgroundImage: '', // e.g. "https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg"
-
-	// Parallax background size
-	parallaxBackgroundSize: '', // CSS syntax, e.g. "2100px 900px" - currently only pixels are supported (don't use % or auto)
-
-	// This slide transition gives best results:
-	transition: linear
-
+describe('clicking the X', function () {
+  it('calls `remove`', function () {
+    spyOn(view, 'remove');
+    view.$('.remove-button').triggerHandler('click');
+    expect(view.remove).toHaveBeenCalled();
+  });
 });
 ```
-
-Make sure that the background size is much bigger than screen size to allow for some scrolling. [View example](http://lab.hakim.se/reveal-js/?parallaxBackgroundImage=https%3A%2F%2Fs3.amazonaws.com%2Fhakim-static%2Freveal-js%2Freveal-parallax-1.jpg&parallaxBackgroundSize=2100px%20900px).
-
-
-
-### Slide Transitions
-The global presentation transition is set using the ```transition``` config value. You can override the global transition for a specific slide by using the ```data-transition``` attribute:
-
-```html
-<section data-transition="zoom">
-	<h2>This slide will override the presentation transition and zoom!</h2>
-</section>
-
-<section data-transition-speed="fast">
-	<h2>Choose from three transition speeds: default, fast or slow!</h2>
-</section>
-```
-
-Note that this does not work with the page and cube transitions.
-
-
-### Internal links
-
-It's easy to link between slides. The first example below targets the index of another slide whereas the second targets a slide with an ID attribute (```<section id="some-slide">```):
-
-```html
-<a href="#/2/2">Link</a>
-<a href="#/some-slide">Link</a>
-```
-
-You can also add relative navigation links, similar to the built in reveal.js controls, by appending one of the following classes on any element. Note that each element is automatically given an ```enabled``` class when it's a valid navigation route based on the current slide.
-
-```html
-<a href="#" class="navigate-left">
-<a href="#" class="navigate-right">
-<a href="#" class="navigate-up">
-<a href="#" class="navigate-down">
-<a href="#" class="navigate-prev"> <!-- Previous vertical or horizontal slide -->
-<a href="#" class="navigate-next"> <!-- Next vertical or horizontal slide -->
-```
-
-
-### Fragments
-Fragments are used to highlight individual elements on a slide. Every element with the class ```fragment``` will be stepped through before moving on to the next slide. Here's an example: http://lab.hakim.se/reveal-js/#/fragments
-
-The default fragment style is to start out invisible and fade in. This style can be changed by appending a different class to the fragment:
-
-```html
-<section>
-	<p class="fragment grow">grow</p>
-	<p class="fragment shrink">shrink</p>
-	<p class="fragment roll-in">roll-in</p>
-	<p class="fragment fade-out">fade-out</p>
-	<p class="fragment current-visible">visible only once</p>
-	<p class="fragment highlight-current-blue">blue only once</p>
-	<p class="fragment highlight-red">highlight-red</p>
-	<p class="fragment highlight-green">highlight-green</p>
-	<p class="fragment highlight-blue">highlight-blue</p>
-</section>
-```
-
-Multiple fragments can be applied to the same element sequentially by wrapping it, this will fade in the text on the first step and fade it back out on the second.
-
-```html
-<section>
-	<span class="fragment fade-in">
-		<span class="fragment fade-out">I'll fade in, then out</span>
-	</span>
-</section>
-```
-
-The display order of fragments can be controlled using the ```data-fragment-index``` attribute.
-
-```html
-<section>
-	<p class="fragment" data-fragment-index="3">Appears last</p>
-	<p class="fragment" data-fragment-index="1">Appears first</p>
-	<p class="fragment" data-fragment-index="2">Appears second</p>
-</section>
-```
-
-### Fragment events
-
-When a slide fragment is either shown or hidden reveal.js will dispatch an event.
-
-Some libraries, like MathJax (see #505), get confused by the initially hidden fragment elements. Often times this can be fixed by calling their update or render function from this callback.
-
-```javascript
-Reveal.addEventListener( 'fragmentshown', function( event ) {
-	// event.fragment = the fragment DOM element
-} );
-Reveal.addEventListener( 'fragmenthidden', function( event ) {
-	// event.fragment = the fragment DOM element
-} );
-```
-
-### Code syntax highlighting
-
-By default, Reveal is configured with [highlight.js](http://softwaremaniacs.org/soft/highlight/en/) for code syntax highlighting. Below is an example with clojure code that will be syntax highlighted. When the `data-trim` attribute is present surrounding whitespace is automatically removed.
-
-```html
-<section>
-	<pre><code data-trim>
-(def lazy-fib
-  (concat
-   [0 1]
-   ((fn rfib [a b]
-        (lazy-cons (+ a b) (rfib b (+ a b)))) 0 1)))
-	</code></pre>
-</section>
-```
-
-### Slide number
-If you would like to display the page number of the current slide you can do so using the ```slideNumber``` configuration value.
-
-```javascript
-Reveal.configure({ slideNumber: true });
-```
-
-
-### Overview mode
-
-Press "Esc" or "o" keys to toggle the overview mode on and off. While you're in this mode, you can still navigate between slides,
-as if you were at 1,000 feet above your presentation. The overview mode comes with a few API hooks:
-
-```javascript
-Reveal.addEventListener( 'overviewshown', function( event ) { /* ... */ } );
-Reveal.addEventListener( 'overviewhidden', function( event ) { /* ... */ } );
-
-// Toggle the overview mode programmatically
-Reveal.toggleOverview();
-```
-
-### Fullscreen mode
-Just press »F« on your keyboard to show your presentation in fullscreen mode. Press the »ESC« key to exit fullscreen mode.
-
-
-### Embedded media
-Embedded HTML5 `<video>`/`<audio>` and YouTube iframes are automatically paused when you navigate away from a slide. This can be disabled by decorating your element with a `data-ignore` attribute.
-
-Add `data-autoplay` to your media element if you want it to automatically start playing when the slide is shown:
-
-```html
-<video data-autoplay src="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"></video>
-```
-
-Additionally the framework automatically pushes two [post messages](https://developer.mozilla.org/en-US/docs/Web/API/Window.postMessage) to all iframes, ```slide:start``` when the slide containing the iframe is made visible and ```slide:stop``` when it is hidden.
-
-
-### Stretching elements
-Sometimes it's desirable to have an element, like an image or video, stretch to consume as much space as possible within a given slide. This can be done by adding the ```.stretch``` class to an element as seen below:
-
-```html
-<section>
-	<h2>This video will use up the remaining space on the slide</h2>
-    <video class="stretch" src="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"></video>
-</section>
-```
-
-Limitations:
-- Only direct descendants of a slide section can be stretched
-- Only one descendant per slide section can be stretched
-
-
-## PDF Export
-
-Presentations can be exported to PDF via a special print stylesheet. This feature requires that you use [Google Chrome](http://google.com/chrome).
-Here's an example of an exported presentation that's been uploaded to SlideShare: http://www.slideshare.net/hakimel/revealjs-13872948.
-
-1. Open your presentation with [css/print/pdf.css](https://github.com/hakimel/reveal.js/blob/master/css/print/pdf.css) included on the page. The default index HTML lets you add *print-pdf* anywhere in the query to include the stylesheet, for example: [lab.hakim.se/reveal-js?print-pdf](http://lab.hakim.se/reveal-js?print-pdf).
-2. Open the in-browser print dialog (CMD+P).
-3. Change the **Destination** setting to **Save as PDF**.
-4. Change the **Layout** to **Landscape**.
-5. Change the **Margins** to **None**.
-6. Click **Save**.
-
-![Chrome Print Settings](https://s3.amazonaws.com/hakim-static/reveal-js/pdf-print-settings.png)
-
-## Theming
-
-The framework comes with a few different themes included:
-
-- default: Gray background, white text, blue links
-- beige: Beige background, dark text, brown links
-- sky: Blue background, thin white text, blue links
-- night: Black background, thick white text, orange links
-- serif: Cappuccino background, gray text, brown links
-- simple: White background, black text, blue links
-- solarized: Cream-colored background, dark green text, blue links
-
-Each theme is available as a separate stylesheet. To change theme you will need to replace **default** below with your desired theme name in index.html:
-
-```html
-<link rel="stylesheet" href="css/theme/default.css" id="theme">
-```
-
-If you want to add a theme of your own see the instructions here: [/css/theme/README.md](https://github.com/hakimel/reveal.js/blob/master/css/theme/README.md).
-
-
-## Speaker Notes
-
-reveal.js comes with a speaker notes plugin which can be used to present per-slide notes in a separate browser window. The notes window also gives you a preview of the next upcoming slide so it may be helpful even if you haven't written any notes. Press the 's' key on your keyboard to open the notes window.
-
-Notes are defined by appending an ```<aside>``` element to a slide as seen below. You can add the ```data-markdown``` attribute to the aside element if you prefer writing notes using Markdown.
-
-When used locally, this feature requires that reveal.js [runs from a local web server](#full-setup).
-
-```html
-<section>
-	<h2>Some Slide</h2>
-
-	<aside class="notes">
-		Oh hey, these are some notes. They'll be hidden in your presentation, but you can see them if you open the speaker notes window (hit 's' on your keyboard).
-	</aside>
-</section>
-```
-
-If you're using the external Markdown plugin, you can add notes with the help of a special delimiter:
-
-```html
-<section data-markdown="example.md" data-separator="^\n\n\n" data-vertical="^\n\n" data-notes="^Note:"></section>
-
-# Title
-## Sub-title
-
-Here is some content...
 
 Note:
-This will only display in the notes window.
-```
 
-## Server Side Speaker Notes
+Differences between `trigger` and `triggerHandler`:
 
-In some cases it can be desirable to run notes on a separate device from the one you're presenting on. The Node.js-based notes plugin lets you do this using the same note definitions as its client side counterpart. Include the required scripts by adding the following dependencies:
+  - The `triggerHandler` method does not cause the default behavior of an event to occur.
+  - While `trigger` will operate on all elements matched by the jQuery object, `triggerHandler` only affects the first matched element.
+  - Events triggered with `triggerHandler` do not bubble up the DOM hierarchy. If they are not handled by the target element directly, they do nothing.
+
+The `triggerHandler` method usually results in a more consistent behavior. We have had many flaky tests because of `trigger`, especially with `focus` and `blur` events.
+
 
 ```javascript
-Reveal.initialize({
-	...
+describe('pressing ENTER', function () {
+  beforeEach(function () {
+    evt = jQuery.Event('keydown');
+    evt.which = 13; // ENTER
+  });
 
-	dependencies: [
-		{ src: 'socket.io/socket.io.js', async: true },
-		{ src: 'plugin/notes-server/client.js', async: true }
-	]
+  it('calls `submit`', function () {
+    spyOn(view, 'submit');
+    view.$('.input-field').trigger(evt);
+    expect(view.submit).toHaveBeenCalled();
+  });
 });
 ```
 
-Then:
+Note:
 
-1. Install [Node.js](http://nodejs.org/)
-2. Run ```npm install```
-3. Run ```node plugin/notes-server```
+Faking keyboard events involves creating them by hand, but it's not too much work. You can create a helper around this.
 
 
-## Multiplexing
+### Composition tests
 
-The multiplex plugin allows your audience to view the slides of the presentation you are controlling on their own phone, tablet or laptop. As the master presentation navigates the slides, all client presentations will update in real time. See a demo at [http://revealjs.jit.su/](http://revealjs.jit.su).
-
-The multiplex plugin needs the following 3 things to operate:
-
-1. Master presentation that has control
-2. Client presentations that follow the master
-3. Socket.io server to broadcast events from the master to the clients
-
-More details:
-
-#### Master presentation
-Served from a static file server accessible (preferably) only to the presenter. This need only be on your (the presenter's) computer. (It's safer to run the master presentation from your own computer, so if the venue's Internet goes down it doesn't stop the show.) An example would be to execute the following commands in the directory of your master presentation: 
-
-1. ```npm install node-static```
-2. ```static```
-
-If you want to use the speaker notes plugin with your master presentation then make sure you have the speaker notes plugin configured correctly along with the configuration shown below, then execute ```node plugin/notes-server``` in the directory of your master presentation. The configuration below will cause it to connect to the socket.io server as a master, as well as launch your speaker-notes/static-file server.
-
-You can then access your master presentation at ```http://localhost:1947```
-
-Example configuration:
 ```javascript
-Reveal.initialize({
-	// other options...
+describe('#render', function () {
+  beforeEach(function () {
+    view = new MessageListView({ collection: ... });
+    view.render();
+  });
 
-	multiplex: {
-		// Example values. To generate your own, see the socket.io server instructions.
-		secret: '13652805320794272084', // Obtained from the socket.io server. Gives this (the master) control of the presentation
-		id: '1ea875674b17ca76', // Obtained from socket.io server
-		url: 'revealjs.jit.su:80' // Location of socket.io server
-	},
-
-	// Don't forget to add the dependencies
-	dependencies: [
-		{ src: '//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.10/socket.io.min.js', async: true },
-		{ src: 'plugin/multiplex/master.js', async: true },
-
-		// and if you want speaker notes
-		{ src: 'plugin/notes-server/client.js', async: true }
-
-		// other dependencies...
-	]
+  it('renders `MessageView` children', function () {
+    expect(view.$el)
+      .toHaveSelector('.message', collection.length);
+  });
 });
 ```
 
-#### Client presentation
-Served from a publicly accessible static file server. Examples include: GitHub Pages, Amazon S3, Dreamhost, Akamai, etc. The more reliable, the better. Your audience can then access the client presentation via ```http://example.com/path/to/presentation/client/index.html```, with the configuration below causing them to connect to the socket.io server as clients.
+Note:
 
-Example configuration:
+If you are following the advice of favoring composition over inheritance, you will end up with views that are composed of views that are composed of... It's views all the way down.
+
+
 ```javascript
-Reveal.initialize({
-	// other options...
+describe('#render', function () {
+  beforeEach(function () {
+    view = new MessageListView({ collection: ... });
+    spyOn(MessageView.prototype, 'render')
+      .andCallFake(function () { return this; });
+    view.render();
+  });
 
-	multiplex: {
-		// Example values. To generate your own, see the socket.io server instructions.
-		secret: null, // null so the clients do not have control of the master presentation
-		id: '1ea875674b17ca76', // id, obtained from socket.io server
-		url: 'revealjs.jit.su:80' // Location of socket.io server
-	},
-
-	// Don't forget to add the dependencies
-	dependencies: [
-		{ src: '//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.10/socket.io.min.js', async: true },
-		{ src: 'plugin/multiplex/client.js', async: true }
-
-		// other dependencies...
-	]
+  // ...
 });
 ```
 
-#### Socket.io server
-Server that receives the slideChanged events from the master presentation and broadcasts them out to the connected client presentations. This needs to be publicly accessible. You can run your own socket.io server with the commands:
+Note:
 
-1. ```npm install```
-2. ```node plugin/multiplex```
+Avoid doing unnecessary work. For example, you can stub out the `render` method of child views. You shouldn't care about what the child views render, as that should be exercised in different test.
 
-Or you use the socket.io server at [http://revealjs.jit.su](http://revealjs.jit.su).
 
-You'll need to generate a unique secret and token pair for your master and client presentations. To do so, visit ```http://example.com/token```, where ```http://example.com``` is the location of your socket.io server. Or if you're going to use the socket.io server at [http://revealjs.jit.su](http://revealjs.jit.su), visit [http://revealjs.jit.su/token](http://revealjs.jit.su/token).
 
-You are very welcome to point your presentations at the Socket.io server running at [http://revealjs.jit.su](http://revealjs.jit.su), but availability and stability are not guaranteed. For anything mission critical I recommend you run your own server. It is simple to deploy to nodejitsu, heroku, your own environment, etc.
+## Testing **routers**
 
-##### socket.io server as file static server
 
-The socket.io server can play the role of static file server for your client presentation, as in the example at [http://revealjs.jit.su](http://revealjs.jit.su). (Open [http://revealjs.jit.su](http://revealjs.jit.su) in two browsers. Navigate through the slides on one, and the other will update to match.) 
+### Setup and teardown
 
-Example configuration:
 ```javascript
-Reveal.initialize({
-	// other options...
+beforeEach(function () {
+  router = new Router();
+  Backbone.history.start();
+});
 
-	multiplex: {
-		// Example values. To generate your own, see the socket.io server instructions.
-		secret: null, // null so the clients do not have control of the master presentation
-		id: '1ea875674b17ca76', // id, obtained from socket.io server
-		url: 'example.com:80' // Location of your socket.io server
-	},
-
-	// Don't forget to add the dependencies
-	dependencies: [
-		{ src: '//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.10/socket.io.min.js', async: true },
-		{ src: 'plugin/multiplex/client.js', async: true }
-
-		// other dependencies...
-	]
+afterEach(function () {
+  Backbone.history.stop();
+});
 ```
 
-It can also play the role of static file server for your master presentation and client presentations at the same time (as long as you don't want to use speaker notes). (Open [http://revealjs.jit.su](http://revealjs.jit.su) in two browsers. Navigate through the slides on one, and the other will update to match. Navigate through the slides on the second, and the first will update to match.) This is probably not desirable, because you don't want your audience to mess with your slides while you're presenting. ;)
 
-Example configuration:
+### Testing routes
+
 ```javascript
-Reveal.initialize({
-	// other options...
+describe('/messages', function () {
+  it('calls `#messages`', function () {
+    spyOn(router, 'messages');
 
-	multiplex: {
-		// Example values. To generate your own, see the socket.io server instructions.
-		secret: '13652805320794272084', // Obtained from the socket.io server. Gives this (the master) control of the presentation
-		id: '1ea875674b17ca76', // Obtained from socket.io server
-		url: 'example.com:80' // Location of your socket.io server
-	},
-
-	// Don't forget to add the dependencies
-	dependencies: [
-		{ src: '//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.10/socket.io.min.js', async: true },
-		{ src: 'plugin/multiplex/master.js', async: true },
-		{ src: 'plugin/multiplex/client.js', async: true }
-
-		// other dependencies...
-	]
+    router.navigate('messages', {
+      trigger: true, replace: true
+    });
+    expect(router.messages).toHaveBeenCalled();
+  });
 });
 ```
 
-## Leap Motion
-The Leap Motion plugin lets you utilize your [Leap Motion](https://www.leapmotion.com/) device to control basic navigation of your presentation. The gestures currently supported are:
 
-##### 1 to 2 fingers
-Pointer &mdash; Point to anything on screen. Move your finger past the device to expand the pointer.
+### Testing methods
 
-##### 1 hand + 3 or more fingers (left/right/up/down)
-Navigate through your slides. See config options to invert movements.
+```javascript
+describe('#messages', function () {
+  beforeEach(function () {
+    spyOn(MessagesView.prototype, 'initialize');
+  });
 
-##### 2 hands upwards
-Toggle the overview mode. Do it a second time to exit the overview.
-
-#### Config Options
-You can edit the following options:
-
-| Property          | Default           | Description
-| ----------------- |:-----------------:| :-------------
-| autoCenter        | true              | Center the pointer based on where you put your finger into the leap motions detection field.
-| gestureDelay      | 500               | How long to delay between gestures in milliseconds.
-| naturalSwipe      | true              | Swipe as though you were touching a touch screen. Set to false to invert.
-| pointerColor      | #00aaff           | The color of the pointer.
-| pointerOpacity    | 0.7               | The opacity of the pointer.
-| pointerSize       | 15                | The minimum height and width of the pointer.
-| pointerTolerance  | 120               | Bigger = slower pointer.
-
-
-Example configuration:
-```js
-Reveal.initialize({
-
-	// other options...
-
-	leap: {
-		naturalSwipe   : false,    // Invert swipe gestures
-		pointerOpacity : 0.5,      // Set pointer opacity to 0.5
-		pointerColor   : '#d80000' // Red pointer
-	},
-
-	dependencies: [
-		{ src: 'plugin/leap/leap.js', async: true }
-	]
-
+  it('instantiates `MessagesView`', function () {
+    router.messages();
+    expect(MessagesView.prototype.initialize)
+      .toHaveBeenCalled();
+  });
 });
 ```
 
-## MathJax
 
-If you want to display math equations in your presentation you can easily do so by including this plugin. The plugin is a very thin wrapper around the [MathJax](http://www.mathjax.org/) library. To use it you'll need to include it as a reveal.js dependency, [find our more about dependencies here](#dependencies).
 
-The plugin defaults to using [LaTeX](http://en.wikipedia.org/wiki/LaTeX) but that can be adjusted through the ```math``` configuration object. Note that MathJax is loaded from a remote server. If you want to use it offline you'll need to download a copy of the library and adjust the ```mathjax``` configuration value. 
+## Misc stuff
 
-Below is an example of how the plugin can be configured. If you don't intend to change these values you do not need to include the ```math``` config object at all.
 
-```js
-Reveal.initialize({
+### Custom matchers
 
-	// other options ...
 
-	math: {
-		mathjax: 'http://cdn.mathjax.org/mathjax/latest/MathJax.js',
-		config: 'TeX-AMS_HTML-full'  // See http://docs.mathjax.org/en/latest/config-files.html
-	},
-	
-	dependencies: [
-		{ src: 'plugin/math/math.js', async: true }
-	]
-
+```javascript
+it('contains `foobar`', function () {
+  expect(view.$('.foobar').length > 0).toBe(true);
 });
 ```
 
-Read MathJax's documentation if you need [HTTPS delivery](http://docs.mathjax.org/en/latest/start.html#secure-access-to-the-cdn) or serving of [specific versions](http://docs.mathjax.org/en/latest/configuration.html#loading-mathjax-from-the-cdn) for stability.
+Expected false to be true <!-- .element: class="fragment" -->
 
 
-## Installation
+```javascript
+beforeEach(function() {
+  this.addMatchers({
+    toHaveSelector: function (selector) {
+      return (this.actual.find(selector).length > 0);
+    }
+  });
+});
 
-The **basic setup** is for authoring presentations only. The **full setup** gives you access to all reveal.js features and plugins such as speaker notes as well as the development tasks needed to make changes to the source.
-
-### Basic setup
-
-The core of reveal.js is very easy to install. You'll simply need to download a copy of this repository and open the index.html file directly in your browser.
-
-1. Download the latest version of reveal.js from <https://github.com/hakimel/reveal.js/releases>
-
-2. Unzip and replace the example contents in index.html with your own
-
-3. Open index.html in a browser to view it
-
-
-### Full setup
-
-Some reveal.js features, like external markdown and speaker notes, require that presentations run from a local web server. The following instructions will set up such a server as well as all of the development tasks needed to make edits to the reveal.js source code.
-
-1. Install [Node.js](http://nodejs.org/)
-
-2. Install [Grunt](http://gruntjs.com/getting-started#installing-the-cli)
-
-4. Clone the reveal.js repository
-```sh
-$ git clone https://github.com/hakimel/reveal.js.git
+it('contains `foobar`', function () {
+  expect(view.$el).toHaveSelector('.foobar');
+});
 ```
 
-5. Navigate to the reveal.js folder
-```sh
-$ cd reveal.js
+Expected { ... } to have selector '.foobar' <!-- .element: class="fragment" -->
+
+
+- [jasmine-jquery](https://github.com/velesin/jasmine-jquery)
+- [jasmine-sinon](https://github.com/froots/jasmine-sinon)
+- [chai-jquery](https://github.com/chaijs/chai-jquery)
+- [sinon-chai](https://github.com/domenic/sinon-chai)
+
+
+### jQuery.fx.off
+
+```javascript
+beforeEach(function() {
+  $.fx.off = true;
+});
 ```
 
-6. Install dependencies
-```sh
-$ npm install
+
+### Fake timers
+
+```javascript
+beforeEach(function() {
+  jasmine.Clock.useMock();
+
+  timerCallback = jasmine.createSpy();
+});
+
+it("tests a timeout", function() {
+  setTimeout(timerCallback, 100);
+
+  jasmine.Clock.tick(101);
+
+  expect(timerCallback).toHaveBeenCalled();
+});
 ```
 
-7. Serve the presentation and monitor source files for changes
-```sh
-$ grunt serve
+
+### Fake ajax requests
+
+```javascript
+beforeEach(function() {
+  jasmine.Ajax.useMock();
+
+  ajaxCallback = jasmine.createSpy();
+});
+
+it("tests an ajax request", function() {
+  $.get('/api', ajaxCallback);
+
+  mostRecentAjaxRequest().response({ status: 200 })
+  expect(ajaxCallback).toHaveBeenCalled();
+});
 ```
 
-8. Open <http://localhost:8000> to view your presentation
 
-You can change the port by using `grunt serve --port 8001`.
+### Watch / LiveReload
 
+![Monitoring changes through `grunt watch:test`](assets/watch.gif)
 
-### Folder Structure
-- **css/** Core styles without which the project does not function
-- **js/** Like above but for JavaScript
-- **plugin/** Components that have been developed as extensions to reveal.js
-- **lib/** All other third party assets (JavaScript, CSS, fonts)
+Note:
 
+Having a tight feedback loop gives you confidence in the changes you are making.
 
-### Contributing
+If you are writing tests, then going back to the browser window and hitting reload, stop that!
 
-Please keep the [issue tracker](http://github.com/hakimel/reveal.js/issues) limited to **bug reports**, **feature requests** and **pull requests**. If you are reporting a bug make sure to include information about which browser and operating system you are using as well as the necessary steps to reproduce the issue.
-
-If you have personal support questions use [StackOverflow](http://stackoverflow.com/questions/tagged/reveal.js).
+A tool like Grunt combined with a headless browser like PhantomJS will give you great results. If you REALLY need to run your unit tests in real browsers, try something like Testem or Karma, which use LiveReload to automatically refresh.
 
 
-#### Pull requests
 
-- Should follow the coding style of the file you work in, most importantly:
-  - Tabs to indent
-  - Single-quoted strings
-- Should be made towards the **dev branch**
-- Should be submitted from a feature/topic branch (not your master)
-- Should not include the minified **reveal.min.js** file
+## Parting thoughts
 
 
-## License
+Keep tests isolated, simple and fast
 
-MIT licensed
+Note:
 
-Copyright (C) 2014 Hakim El Hattab, http://hakim.se
+Even though the talk is about testing Backbone apps, in my opinion the important stuff was in the "General advice" part of the presentation. If you keep the basics in mind, you will write good tests for any system.
+
+Sure, learning the intricacies of testing with regards to the different pieces of your Backbone app will help you. But don't forget about keeping tests isolated, simple and fast. That's the key.
+
+
+
+## Questions?
+
+<https://unindented.github.io/testing-backbone-apps-presentation/> <!-- .element: class="fragment" -->
