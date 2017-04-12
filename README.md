@@ -252,7 +252,7 @@ Fake it all, but clean up after you.
 ### Testing frameworks
 
 - [Jasmine](http://jasmine.github.io/)
-- [Mocha](http://visionmedia.github.io/mocha/) + [Chai](http://chaijs.com/) + [SinonJS](http://sinonjs.org/)
+- [Mocha](http://mochajs.org/) + [Chai](http://chaijs.com/) + [SinonJS](http://sinonjs.org/)
 
 Note:
 
